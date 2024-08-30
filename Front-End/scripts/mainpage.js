@@ -39,6 +39,19 @@ function OnStart(){
             cursor: pointer;
             transition: all 0.3s;
         }
+    
+        .button3 {
+            flex: 1;
+            margin: 5 5px;
+            padding: 3px;
+            text-align: center;
+            background-color: white;
+            color: black;
+            border: 1px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
 
         /* Active state for the selected button */
         .active {
@@ -115,6 +128,10 @@ function OnStart(){
         inputContainer.appendChild(input1);
         inputContainer.appendChild(input2);
 
+        const button3 = document.createElement('div');
+        button3.className = 'button3';
+        button3.textContent = 'Join Room';
+
         // If Button 2 is active, add a dropdown box
         if (button2.classList.contains('active')) {
             const dropdown = document.createElement('select');
@@ -135,7 +152,11 @@ function OnStart(){
             dropdown.appendChild(option3);
 
             inputContainer.appendChild(dropdown);
+
+            button3.textContent = 'Create Room';
         }
+
+        inputContainer.appendChild(button3)
 
         // Append the input container to the main div
         main.appendChild(inputContainer);
