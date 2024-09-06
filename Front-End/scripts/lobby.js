@@ -97,7 +97,7 @@ function loadLobby(){
 }
 
 //Ugly code duplication I know... :) 
-//didn't want to waste time figuring this out as I had better to do.
+//didn't want to waste time figuring this out, as I had better to do.
 function adjustMainHeight() {
     const inputContainer = document.getElementById('input-container');
     const newHeight = inputContainer ? inputContainer.offsetHeight + 15 : 0;
