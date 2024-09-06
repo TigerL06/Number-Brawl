@@ -118,6 +118,7 @@ function OnStart(){
         // Create the two text input boxes
         const input1 = document.createElement('input');
         input1.type = 'text';
+        input1.id = 'input1';
         input1.placeholder = 'Name';
 
         // Append the inputs to the container
@@ -130,6 +131,7 @@ function OnStart(){
         if (button1.classList.contains('active')){
             const input2 = document.createElement('input');
             input2.type = 'text';
+            input2.id = 'input2';
             input2.placeholder = 'Room-Key';
 
             inputContainer.appendChild(input2);
@@ -195,10 +197,15 @@ function OnStart(){
 }
 
 function JoinRoom(){
+    const name = document.getElementById('input1').value;
+    const roomKey = document.getElementById('input2').value;
+
     cleanup();
 }
 
 function CreateRoom(){
+    const name = document.getElementById('input1').value;
+
     cleanup();
 }
 
