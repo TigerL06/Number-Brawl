@@ -1,17 +1,36 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
 
+app.set('view engine', 'ejs');
 
-app.set('view engine', 'ejs')
-app.get("/", (rep, res) =>{
-    console.log("Here")
-    res.json({})
-    res.download()
-    res.render()
-})
+app.get("/", (req, res) => {
+    res.render("index");
+});
 
-const router = require('./routes/users')
-app.use('/users', router)
+io.on('connection', (socket) => {
+    console.log('a user connected');
 
-app.listen(3000)
+    socket.on('join_room', (room) => {
+        socket.join(room);
+        console.log(`User joined room: ${room}`);
+    });
 
+    socket.on('message', ({ room, message }) => {
+        io.to(room).emit('message', {
+            message,
+            name: 'Friend'
+        });
+    });
+
+    socket.on('disconnect', () => {
+        console.log('a user disconnected');
+    });
+});
+
+server.listen(6800, () => {
+    console.log('Server running on port 6800');
+});
