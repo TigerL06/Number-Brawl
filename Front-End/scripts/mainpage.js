@@ -118,19 +118,25 @@ function OnStart(){
         // Create the two text input boxes
         const input1 = document.createElement('input');
         input1.type = 'text';
-        input1.placeholder = 'Username';
-
-        const input2 = document.createElement('input');
-        input2.type = 'text';
-        input2.placeholder = 'Password';
+        input1.placeholder = 'Name';
 
         // Append the inputs to the container
         inputContainer.appendChild(input1);
-        inputContainer.appendChild(input2);
 
         const button3 = document.createElement('div');
         button3.className = 'button3';
-        button3.textContent = 'Join Room';
+
+        // If Button 1 is active, add Room-Key text-field
+        if (button1.classList.contains('active')){
+            const input2 = document.createElement('input');
+            input2.type = 'text';
+            input2.placeholder = 'Room-Key';
+
+            inputContainer.appendChild(input2);
+
+            button3.textContent = 'Join Room';
+            button3.onclick = JoinRoom;
+        }
 
         // If Button 2 is active, add a dropdown box
         if (button2.classList.contains('active')) {
@@ -154,6 +160,7 @@ function OnStart(){
             inputContainer.appendChild(dropdown);
 
             button3.textContent = 'Create Room';
+            button3.onclick = CreateRoom;
         }
 
         inputContainer.appendChild(button3)
@@ -185,4 +192,35 @@ function OnStart(){
 
     // Render the initial state for Button 1
     renderInputFields();
+}
+
+function JoinRoom(){
+    cleanup();
+}
+
+function CreateRoom(){
+    cleanup();
+}
+
+function cleanup() {
+    // Remove the dynamically added style tag
+    const styleTag = document.querySelector('style');
+    if (styleTag) {
+        styleTag.remove();
+    }
+
+    // Select the main container
+    const main = document.getElementById('main');
+
+    // Remove the button container if it exists
+    const buttonContainer = document.getElementById('button-container');
+    if (buttonContainer) {
+        buttonContainer.remove();
+    }
+
+    // Remove the input container if it exists
+    const inputContainer = document.getElementById('input-container');
+    if (inputContainer) {
+        inputContainer.remove();
+    }
 }
