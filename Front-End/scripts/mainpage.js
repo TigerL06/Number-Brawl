@@ -67,6 +67,7 @@ function OnStart(){
             display: flex;
             flex-direction: column;
             gap: 10px;
+            flex: 1;
         }
 
         input, select {
@@ -165,7 +166,7 @@ function OnStart(){
             button3.onclick = CreateRoom;
         }
 
-        inputContainer.appendChild(button3)
+        inputContainer.appendChild(button3);
 
         // Append the input container to the main div
         main.appendChild(inputContainer);
@@ -200,13 +201,23 @@ function JoinRoom(){
     const name = document.getElementById('input1').value;
     const roomKey = document.getElementById('input2').value;
 
-    cleanup();
+    //Has to be changed later!
+    if(name != '' && roomKey != ''){
+        cleanup();
+        
+        loadLobby();
+    }
 }
 
 function CreateRoom(){
     const name = document.getElementById('input1').value;
 
-    cleanup();
+    //Has to be changed later!
+    if(name != ''){
+        cleanup();
+    
+        loadLobby();
+    }
 }
 
 function cleanup() {
