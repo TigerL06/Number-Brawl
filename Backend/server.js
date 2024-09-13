@@ -4,6 +4,8 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+let number;
+Randomnumber();
 
 app.set('view engine', 'ejs');
 
@@ -34,3 +36,18 @@ io.on('connection', (socket) => {
 server.listen(6800, () => {
     console.log('Server running on port 6800');
 });
+
+function Randomnumber() {
+    number = Math.floor(Math.random() * 101);
+    console.log(`Generierte Zufallszahl: ${number}`);
+}
+
+function messagetest(usernumber){
+    if(usernumber === number){
+
+    }else if(usernumber > number){
+
+    }else if(usernumber < number){
+        
+    }
+}
