@@ -38,6 +38,7 @@
         <label for="room">Room Name: </label>
         <input type="text" id="room" placeholder="Enter room name">
         <button id="join-btn">Join Room</button>
+        <button id="rnd-btn">Create Randomnumber</button>
     </div>
 
     <div id="chat-box"></div>
@@ -59,6 +60,11 @@
                 socket.emit('join_room', room);
                 document.getElementById('chat-box').innerHTML += `<p><em>Joined room: ${room}</em></p>`;
             }
+        });
+
+        // Zufallszahl bei Klick auf den Button vom Server anfordern
+        document.getElementById('rnd-btn').addEventListener('click', () => {
+            socket.emit('generate_random_number'); // Event an den Server senden
         });
 
         document.getElementById('send-btn').addEventListener('click', () => {

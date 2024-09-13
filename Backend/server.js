@@ -21,6 +21,11 @@ io.on('connection', (socket) => {
         console.log(`User joined room: ${room}`);
     });
 
+    // Client sendet eine Anfrage, um eine Zufallszahl zu generieren
+    socket.on('generate_random_number', () => {
+        Randomnumber(); // Zufallszahl generieren
+    });
+    
     socket.on('message', ({ room, message }) => {
         io.to(room).emit('message', {
             message,
@@ -48,6 +53,6 @@ function messagetest(usernumber){
     }else if(usernumber > number){
 
     }else if(usernumber < number){
-        
+
     }
 }
