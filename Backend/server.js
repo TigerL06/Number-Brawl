@@ -5,6 +5,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 let number;
+let answer;
 Randomnumber();
 
 app.set('view engine', 'ejs');
@@ -27,8 +28,11 @@ io.on('connection', (socket) => {
     });
     
     socket.on('message', ({ room, message }) => {
+        let number = Number(message)
+        Messagetest(number)
+
         io.to(room).emit('message', {
-            message,
+            answer,
             name: 'Friend'
         });
     });
@@ -47,12 +51,15 @@ function Randomnumber() {
     console.log(`Generierte Zufallszahl: ${number}`);
 }
 
-function messagetest(usernumber){
+function Messagetest(usernumber){
     if(usernumber === number){
-
+        answer = "Du hast gewonen"
+        console.log(answer);
     }else if(usernumber > number){
-
+        answer = "Die Zahl ist grösser als die Zufallszahl"
+        console.log(answer);
     }else if(usernumber < number){
-
+        answer = "Die Zahl ist kleiner, als die Zufallszahl"
+        console.log(answer);
     }
 }
