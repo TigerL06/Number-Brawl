@@ -6,6 +6,7 @@ const server = http.createServer(app);
 const io = socketIo(server);
 let number;
 let answer;
+let bool = false;
 Randomnumber();
 
 app.set('view engine', 'ejs');
@@ -30,11 +31,17 @@ io.on('connection', (socket) => {
     socket.on('message', ({ room, message }) => {
         let number = Number(message)
         Messagetest(number)
+        if(bool === true){
+            io.to(room).emit('win', {        });
+            bool = false;
 
+        }
         io.to(room).emit('message', {
-            answer,
+            message: answer,
             name: 'Friend'
         });
+
+
     });
 
     socket.on('disconnect', () => {
@@ -54,7 +61,9 @@ function Randomnumber() {
 function Messagetest(usernumber){
     if(usernumber === number){
         answer = "Du hast gewonen"
+        bool = true;
         console.log(answer);
+        Randomnumber();
     }else if(usernumber > number){
         answer = "Die Zahl ist grösser als die Zufallszahl"
         console.log(answer);

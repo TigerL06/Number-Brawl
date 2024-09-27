@@ -52,7 +52,10 @@
     <script>
         const socket = io();
         let currentRoom = '';
-
+        function Win(){
+            alert("Du hast gewonnen.")
+        }
+        
         document.getElementById('join-btn').addEventListener('click', () => {
             const room = document.getElementById('room').value;
             if (room) {
@@ -77,6 +80,10 @@
 
         socket.on('message', (data) => {
             document.getElementById('chat-box').innerHTML += `<p><strong>${data.name}:</strong> ${data.message}</p>`;
+        });
+
+        socket.on('win', () => {
+        Win();
         });
     </script>
 </body>
