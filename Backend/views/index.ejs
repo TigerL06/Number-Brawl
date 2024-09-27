@@ -19,7 +19,7 @@
             padding: 10px;
             background-color: #fff;
         }
-        #message {
+        #message, #room, #username {
             width: calc(100% - 120px);
             padding: 10px;
             margin: 10px 0;
@@ -54,7 +54,6 @@
             <label for="room">Room Name: </label>
             <input type="text" id="room" placeholder="Enter room name">
             <button id="join-btn">Join Room</button>
-            <button id="rnd-btn">Create Randomnumber</button>
         </div>
         <div>
             <label for="username">Username: </label>
@@ -74,7 +73,7 @@
     <script>
         const socket = io();
         let currentRoom = '';
-        let userName = 'Friend';
+        let userName = 'Anonymous';
 
         function Win(winnerName) {
             const chatBox = document.getElementById('chat-box');
@@ -93,15 +92,6 @@
             }
         });
 
-        // Zufallszahl bei Klick auf den Button vom Server anfordern
-        document.getElementById('rnd-btn').addEventListener('click', () => {
-            const room = document.getElementById('room').value;
-            if (room){
-                currentRoom = room;
-                socket.emit('generate_random_number', {room: currentRoom}); // Event an den Server senden
-            }
-        });
-
         // Setze den Benutzernamen
         document.getElementById('name-btn').addEventListener('click', () => {
             const newUserName = document.getElementById('username').value;
@@ -112,12 +102,49 @@
         });
 
         document.getElementById('send-btn').addEventListener('click', () => {
+            sendMessage();
+        });
+
+        // Füge Event Listener für die Enter-Taste für das Nachrichtenfeld hinzu
+        document.getElementById('message').addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                sendMessage();
+                event.preventDefault(); // Verhindert, dass ein Zeilenumbruch im Eingabefeld erzeugt wird
+            }
+        });
+
+        // Füge Event Listener für die Enter-Taste für das Raumfeld hinzu
+        document.getElementById('room').addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                const room = document.getElementById('room').value;
+                if (room) {
+                    currentRoom = room;
+                    socket.emit('join_room', room);
+                    document.getElementById('chat-box').innerHTML += `<p><em>Joined room: ${room}</em></p>`;
+                }
+                event.preventDefault(); // Verhindert, dass ein Zeilenumbruch im Eingabefeld erzeugt wird
+            }
+        });
+
+        // Füge Event Listener für die Enter-Taste für das Benutzernamenfeld hinzu
+        document.getElementById('username').addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                const newUserName = document.getElementById('username').value;
+                if (newUserName) {
+                    userName = newUserName;
+                    document.getElementById('chat-box').innerHTML += `<p><em>Name geändert zu: ${userName}</em></p>`;
+                }
+                event.preventDefault(); // Verhindert, dass ein Zeilenumbruch im Eingabefeld erzeugt wird
+            }
+        });
+
+        function sendMessage() {
             const message = document.getElementById('message').value;
             if (message && currentRoom) {
                 socket.emit('message', { room: currentRoom, message, name: userName });
                 document.getElementById('message').value = '';
             }
-        });
+        }
 
         socket.on('message', (data) => {
             const chatBox = document.getElementById('chat-box');

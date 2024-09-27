@@ -39,6 +39,8 @@ io.on('connection', (socket) => {
     // Nachricht empfangen
     socket.on('message', ({ room, message, name }) => {
         const userNumber = Number(message); // Die Nachricht in eine Zahl umwandeln
+
+        // Überprüfen, ob die Nachricht eine gültige Zahl ist
         if (!isNaN(userNumber) && rooms[room]) {
             Messagetest(userNumber, room);
             
@@ -54,6 +56,12 @@ io.on('connection', (socket) => {
                     name: name || 'Friend'
                 });
             }
+        } else {
+            // Wenn die Nachricht keine Zahl ist, sende sie als normale Nachricht
+            io.to(room).emit('message', {
+                message: message, // Sende die ursprüngliche Nachricht
+                name: name || 'Friend'
+            });
         }
     });
 
