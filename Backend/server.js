@@ -56,6 +56,12 @@ io.on('connection', (socket) => {
                     name: name || 'Friend'
                 });
             }
+        }else {
+            // Wenn die Nachricht keine Zahl ist, sende sie als normale Nachricht
+            io.to(room).emit('message', {
+                message: message, // Sende die ursprüngliche Nachricht
+                name: name || 'Friend'
+            });
         }
     });
 
