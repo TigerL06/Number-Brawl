@@ -5,13 +5,13 @@ FROM node:18
 WORKDIR /app
 
 # 3. Kopiere die package.json und package-lock.json (falls vorhanden) aus dem Backend-Ordner
-COPY Backend/package*.json ./
+COPY package*.json ./
 
 # 4. Installiere die Abhängigkeiten
 RUN npm install
 
 # 5. Kopiere den restlichen Anwendungs-Code aus dem Backend-Ordner
-COPY Backend/ .
+COPY . .
 
 # 6. Exponiere den Port, auf dem der Server läuft (z.B. 6800)
 EXPOSE 6800
