@@ -23,17 +23,17 @@ io.on('connection', (socket) => {
         console.log(`User joined room: ${room}`);
         if (!rooms[room]) {
             rooms[room] = Randomnumber();
-            console.log(`Zufallszahl für Raum ${room}: ${rooms[room]}`);
+            let number = Number(rooms[room]);
+            console.log(`Zufallszahl für Raum ${room}: ${number}`);
         }
     });
 
     // Client sendet eine Anfrage, um eine Zufallszahl zu generieren
-    socket.on('generate_random_number', (room), () => {
-        rooms[room] = Randomnumber(); // Zufallszahl generieren
+    socket.on('generate_random_number', (room) => { 
+        Randomnumber(room); // Zufallszahl generieren
     });
     
     socket.on('message', ({ room, message, name }) => {
-        let number = Number(message);
         Messagetest(number, room);
         if (bool === true) {
             io.to(room).emit('win', { winner: name }); // Den Namen des Gewinners senden
@@ -55,21 +55,22 @@ server.listen(6800, () => {
     console.log('Server running on port 6800');
 });
 
-function Randomnumber() {
-    number = Math.floor(Math.random() * 101);
-    console.log(`Generierte Zufallszahl: ${number}`);
+function Randomnumber(room) {
+    let number = Math.floor(Math.random() * 101);
+    rooms[room] = number
+    console.log(`Generierte Zufallszahl: ${rooms[room]} beim Raum ${room}`);
 }
 
 function Messagetest(usernumber, room){
-    if(usernumber === number){
+    if(usernumber === rooms[room]){
         answer = "Du hast gewonen"
         bool = true;
         console.log(answer);
         rooms[room] = Randomnumber();
-    }else if(usernumber > number){
+    }else if(usernumber > rooms[room]){
         answer = "Die Zahl ist grösser als die Zufallszahl"
         console.log(answer);
-    }else if(usernumber < number){
+    }else if(usernumber < rooms[room]){
         answer = "Die Zahl ist kleiner, als die Zufallszahl"
         console.log(answer);
     }
