@@ -70,8 +70,8 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(6800, () => {
-    console.log('Server running on port 6800');
+server.listen(3000, () => {
+    console.log('Server running on port 3000');
 });
 
 // Zufallszahl generieren
@@ -86,7 +86,7 @@ function Messagetest(userNumber, room) {
         console.log(answer);
     } else if (userNumber > rooms[room]) {
         answer = "Die Zahl ist größer als die Zufallszahl";
-        console.log(answer);
+        console.log(answer);np
     } else if (userNumber < rooms[room]) {
         answer = "Die Zahl ist kleiner als die Zufallszahl";
         console.log(answer);
