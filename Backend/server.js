@@ -83,12 +83,9 @@ function Randomnumber() {
 function Messagetest(userNumber, room) {
     if (userNumber === rooms[room]) {
         answer = "Du hast gewonnen";
-        console.log(answer);
     } else if (userNumber > rooms[room]) {
         answer = "Die Zahl ist größer als die Zufallszahl";
-        console.log(answer);
     } else if (userNumber < rooms[room]) {
         answer = "Die Zahl ist kleiner als die Zufallszahl";
-        console.log(answer);
     }
 }
