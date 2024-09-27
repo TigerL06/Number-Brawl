@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
                     name: name || 'Friend'
                 });
             }
-        }else {
+        } else {
             // Wenn die Nachricht keine Zahl ist, sende sie als normale Nachricht
             io.to(room).emit('message', {
                 message: message, // Sende die ursprüngliche Nachricht
@@ -83,9 +83,12 @@ function Randomnumber() {
 function Messagetest(userNumber, room) {
     if (userNumber === rooms[room]) {
         answer = "Du hast gewonnen";
+        console.log(answer);
     } else if (userNumber > rooms[room]) {
         answer = "Die Zahl ist größer als die Zufallszahl";
+        console.log(answer);
     } else if (userNumber < rooms[room]) {
         answer = "Die Zahl ist kleiner als die Zufallszahl";
+        console.log(answer);
     }
 }
