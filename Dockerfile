@@ -17,4 +17,4 @@ COPY Backend/ .
 EXPOSE 6800
 
 # 7. Start-Befehl, um den Node.js-Server zu starten
-CMD ["npm", "run", "devStart"]
+CMD ["npm", "run devStart"]
