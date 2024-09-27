@@ -8,7 +8,7 @@ WORKDIR /app
 COPY Backend/package*.json ./
 
 # 4. Installiere die Abhängigkeiten
-RUN npm install
+RUN npm ci
 
 # 5. Kopiere den restlichen Anwendungs-Code aus dem Backend-Ordner
 COPY Backend/ .
