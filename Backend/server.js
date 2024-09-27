@@ -28,17 +28,17 @@ io.on('connection', (socket) => {
         Randomnumber(); // Zufallszahl generieren
     });
     
-    socket.on('message', ({ room, message }) => {
-        let number = Number(message)
-        Messagetest(number)
-        if(bool === true){
-            io.to(room).emit('win', {        });
+    socket.on('message', ({ room, message, name }) => {
+        let number = Number(message);
+        Messagetest(number);
+        if (bool === true) {
+            io.to(room).emit('win', {});
             bool = false;
 
         }
         io.to(room).emit('message', {
             message: answer,
-            name: 'Friend'
+            name: name || 'Friend'
         });
 
 

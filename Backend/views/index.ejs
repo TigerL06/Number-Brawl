@@ -28,17 +28,35 @@
             padding: 10px 20px;
             cursor: pointer;
         }
+        #user-settings {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .message {
+            margin: 5px 0;
+        }
+        .message.self {
+            color: green;
+        }
     </style>
 </head>
 <body>
 
     <h2>Room Chat</h2>
     
-    <div>
-        <label for="room">Room Name: </label>
-        <input type="text" id="room" placeholder="Enter room name">
-        <button id="join-btn">Join Room</button>
-        <button id="rnd-btn">Create Randomnumber</button>
+    <div id="user-settings">
+        <div>
+            <label for="room">Room Name: </label>
+            <input type="text" id="room" placeholder="Enter room name">
+            <button id="join-btn">Join Room</button>
+            <button id="rnd-btn">Create Randomnumber</button>
+        </div>
+        <div>
+            <label for="username">Username: </label>
+            <input type="text" id="username" placeholder="Enter your name">
+            <button id="name-btn">Set Name</button>
+        </div>
     </div>
 
     <div id="chat-box"></div>
@@ -52,10 +70,12 @@
     <script>
         const socket = io();
         let currentRoom = '';
+        let userName = 'Anonymous';
+
         function Win(){
-            alert("Du hast gewonnen.")
+            alert("Du hast gewonnen.");
         }
-        
+
         document.getElementById('join-btn').addEventListener('click', () => {
             const room = document.getElementById('room').value;
             if (room) {
@@ -70,20 +90,39 @@
             socket.emit('generate_random_number'); // Event an den Server senden
         });
 
+        // Setze den Benutzernamen
+        document.getElementById('name-btn').addEventListener('click', () => {
+            const newUserName = document.getElementById('username').value;
+            if (newUserName) {
+                userName = newUserName;
+                document.getElementById('chat-box').innerHTML += `<p><em>Name geändert zu: ${userName}</em></p>`;
+            }
+        });
+
         document.getElementById('send-btn').addEventListener('click', () => {
             const message = document.getElementById('message').value;
             if (message && currentRoom) {
-                socket.emit('message', { room: currentRoom, message });
+                socket.emit('message', { room: currentRoom, message, name: userName });
                 document.getElementById('message').value = '';
             }
         });
 
         socket.on('message', (data) => {
-            document.getElementById('chat-box').innerHTML += `<p><strong>${data.name}:</strong> ${data.message}</p>`;
+            const chatBox = document.getElementById('chat-box');
+            const messageElement = document.createElement('p');
+            messageElement.classList.add('message');
+            
+            // Wenn der Benutzer selbst der Absender ist, wird die Nachricht grün
+            if (data.name === userName) {
+                messageElement.classList.add('self');
+            }
+
+            messageElement.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
+            chatBox.appendChild(messageElement);
         });
 
         socket.on('win', () => {
-        Win();
+            Win();
         });
     </script>
 </body>
