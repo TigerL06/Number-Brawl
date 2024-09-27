@@ -23,7 +23,7 @@ io.on('connection', (socket) => {
         console.log(`User joined room: ${room}`);
         if (!rooms[room]) {
             rooms[room] = Randomnumber();
-            let number = Number(rooms[room]);
+            let number = toString(rooms[room]);
             console.log(`Zufallszahl für Raum ${room}: ${number}`);
         }
     });
@@ -58,7 +58,8 @@ server.listen(6800, () => {
 function Randomnumber(room) {
     let number = Math.floor(Math.random() * 101);
     rooms[room] = number
-    console.log(`Generierte Zufallszahl: ${rooms[room]} beim Raum ${room}`);
+    _room = toString(room);
+    console.log(`Generierte Zufallszahl: ${rooms[room]} beim Raum ${_room}`);
 }
 
 function Messagetest(usernumber, room){
