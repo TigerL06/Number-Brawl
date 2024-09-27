@@ -31,17 +31,16 @@ io.on('connection', (socket) => {
     socket.on('message', ({ room, message, name }) => {
         let number = Number(message);
         Messagetest(number);
+    
         if (bool === true) {
-            io.to(room).emit('win', {});
+            io.to(room).emit('win', { winner: name }); // Den Namen des Gewinners senden
             bool = false;
-
+        } else {
+            io.to(room).emit('message', {
+                message: answer,
+                name: name || 'Friend'  // Den Namen des Absenders weitergeben
+            });
         }
-        io.to(room).emit('message', {
-            message: answer,
-            name: name || 'Friend'
-        });
-
-
     });
 
     socket.on('disconnect', () => {

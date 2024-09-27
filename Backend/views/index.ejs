@@ -39,6 +39,10 @@
         .message.self {
             color: green;
         }
+        .win-message {
+            font-weight: bold;
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -72,8 +76,12 @@
         let currentRoom = '';
         let userName = 'Anonymous';
 
-        function Win(){
-            alert("Du hast gewonnen.");
+        function Win(winnerName) {
+            const chatBox = document.getElementById('chat-box');
+            const winMessage = document.createElement('p');
+            winMessage.classList.add('win-message');
+            winMessage.textContent = `${winnerName} hat gewonnen!`; // Zeige den Gewinnernamen an
+            chatBox.appendChild(winMessage);
         }
 
         document.getElementById('join-btn').addEventListener('click', () => {
@@ -121,8 +129,8 @@
             chatBox.appendChild(messageElement);
         });
 
-        socket.on('win', () => {
-            Win();
+        socket.on('win', (data) => {
+            Win(data.winner); // Gewinnername anzeigen
         });
     </script>
 </body>
