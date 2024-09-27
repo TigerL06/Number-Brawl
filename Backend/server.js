@@ -7,7 +7,7 @@ const io = socketIo(server);
 let number;
 let answer;
 let bool = false;
-Randomnumber();
+const rooms = {};
 
 app.set('view engine', 'ejs');
 
@@ -21,17 +21,20 @@ io.on('connection', (socket) => {
     socket.on('join_room', (room) => {
         socket.join(room);
         console.log(`User joined room: ${room}`);
+        if (!rooms[room]) {
+            rooms[room] = Randomnumber();
+            console.log(`Zufallszahl für Raum ${room}: ${rooms[room]}`);
+        }
     });
 
     // Client sendet eine Anfrage, um eine Zufallszahl zu generieren
-    socket.on('generate_random_number', () => {
-        Randomnumber(); // Zufallszahl generieren
+    socket.on('generate_random_number', (room), () => {
+        rooms[room] = Randomnumber(); // Zufallszahl generieren
     });
     
     socket.on('message', ({ room, message, name }) => {
         let number = Number(message);
-        Messagetest(number);
-    
+        Messagetest(number, room);
         if (bool === true) {
             io.to(room).emit('win', { winner: name }); // Den Namen des Gewinners senden
             bool = false;
@@ -57,12 +60,12 @@ function Randomnumber() {
     console.log(`Generierte Zufallszahl: ${number}`);
 }
 
-function Messagetest(usernumber){
+function Messagetest(usernumber, room){
     if(usernumber === number){
         answer = "Du hast gewonen"
         bool = true;
         console.log(answer);
-        Randomnumber();
+        rooms[room] = Randomnumber();
     }else if(usernumber > number){
         answer = "Die Zahl ist grösser als die Zufallszahl"
         console.log(answer);

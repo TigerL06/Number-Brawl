@@ -95,7 +95,11 @@
 
         // Zufallszahl bei Klick auf den Button vom Server anfordern
         document.getElementById('rnd-btn').addEventListener('click', () => {
-            socket.emit('generate_random_number'); // Event an den Server senden
+            const room = document.getElementById('room').value;
+            if (room){
+                currentRoom = room;
+                socket.emit('generate_random_number', {room: currentRoom}); // Event an den Server senden
+            }
         });
 
         // Setze den Benutzernamen
