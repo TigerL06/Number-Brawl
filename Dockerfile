@@ -14,7 +14,7 @@ RUN npm install
 COPY Backend/ .
 
 # 6. Exponiere den Port, auf dem der Server läuft (z.B. 6800)
-EXPOSE 6800
+EXPOSE 3000
 
 # 7. Start-Befehl, um den Node.js-Server zu starten
 CMD ["npm", "run devStart"]
