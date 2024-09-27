@@ -4,9 +4,7 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
-let number;
 let answer;
-let bool = false;
 const rooms = {};
 
 app.set('view engine', 'ejs');
@@ -16,38 +14,51 @@ app.get("/", (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    console.log('a user connected');
+    console.log('A user connected');
 
+    // Benutzer tritt einem Raum bei
     socket.on('join_room', (room) => {
         socket.join(room);
         console.log(`User joined room: ${room}`);
+
+        // Wenn der Raum keine Zufallszahl hat, erstelle eine
         if (!rooms[room]) {
-            rooms[room] = Randomnumber();
-            let number = toString(rooms[room]);
-            console.log(`Zufallszahl für Raum ${room}: ${number}`);
+            rooms[room] = Randomnumber(); // Zufallszahl für den Raum generieren
+            console.log(`Zufallszahl für Raum ${room}: ${rooms[room]}`);
         }
     });
 
     // Client sendet eine Anfrage, um eine Zufallszahl zu generieren
     socket.on('generate_random_number', (room) => { 
-        Randomnumber(room); // Zufallszahl generieren
+        if (room) {
+            rooms[room] = Randomnumber(); // Neue Zufallszahl für den Raum generieren
+            console.log(`Neue Zufallszahl für Raum ${room}: ${rooms[room]}`);
+        }
     });
-    
+
+    // Nachricht empfangen
     socket.on('message', ({ room, message, name }) => {
-        Messagetest(number, room);
-        if (bool === true) {
-            io.to(room).emit('win', { winner: name }); // Den Namen des Gewinners senden
-            bool = false;
-        } else {
-            io.to(room).emit('message', {
-                message: answer,
-                name: name || 'Friend'  // Den Namen des Absenders weitergeben
-            });
+        const userNumber = Number(message); // Die Nachricht in eine Zahl umwandeln
+        if (!isNaN(userNumber) && rooms[room]) {
+            Messagetest(userNumber, room);
+            
+            if (answer === "Du hast gewonnen") {
+                io.to(room).emit('win', { winner: name }); // Gewinner an den Raum senden
+                
+                // Neue Zufallszahl nach dem Gewinn explizit für den Raum generieren und speichern
+                rooms[room] = Randomnumber();
+                console.log(`Neue Zufallszahl nach Gewinn für Raum ${room}: ${rooms[room]}`);
+            } else {
+                io.to(room).emit('message', {
+                    message: answer,
+                    name: name || 'Friend'
+                });
+            }
         }
     });
 
     socket.on('disconnect', () => {
-        console.log('a user disconnected');
+        console.log('A user disconnected');
     });
 });
 
@@ -55,24 +66,21 @@ server.listen(6800, () => {
     console.log('Server running on port 6800');
 });
 
-function Randomnumber(room) {
-    let number = Math.floor(Math.random() * 101);
-    rooms[room] = number
-    _room = toString(room);
-    console.log(`Generierte Zufallszahl: ${rooms[room]} beim Raum ${_room}`);
+// Zufallszahl generieren
+function Randomnumber() {
+    return Math.floor(Math.random() * 101);
 }
 
-function Messagetest(usernumber, room){
-    if(usernumber === rooms[room]){
-        answer = "Du hast gewonen"
-        bool = true;
+// Testen, ob die Benutzernummer der Zufallszahl des Raumes entspricht
+function Messagetest(userNumber, room) {
+    if (userNumber === rooms[room]) {
+        answer = "Du hast gewonnen";
         console.log(answer);
-        rooms[room] = Randomnumber();
-    }else if(usernumber > rooms[room]){
-        answer = "Die Zahl ist grösser als die Zufallszahl"
+    } else if (userNumber > rooms[room]) {
+        answer = "Die Zahl ist größer als die Zufallszahl";
         console.log(answer);
-    }else if(usernumber < rooms[room]){
-        answer = "Die Zahl ist kleiner, als die Zufallszahl"
+    } else if (userNumber < rooms[room]) {
+        answer = "Die Zahl ist kleiner als die Zufallszahl";
         console.log(answer);
     }
 }
