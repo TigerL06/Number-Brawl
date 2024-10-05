@@ -160,7 +160,14 @@
             chatBox.appendChild(messageElement);
         });
 
+            // Funktion zum Leeren des Chat-Logs
+        function clearChat() {
+        const chatBox = document.getElementById('chat-box');
+        chatBox.innerHTML = ''; // Leert den Chat
+        }
+
         socket.on('win', (data) => {
+            clearChat();
             Win(data.winner); // Gewinnername anzeigen
         });
     </script>

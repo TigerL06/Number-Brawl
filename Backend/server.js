@@ -86,7 +86,7 @@ function Messagetest(userNumber, room) {
         console.log(answer);
     } else if (userNumber > rooms[room]) {
         answer = "Die Zahl ist größer als die Zufallszahl";
-        console.log(answer);np
+        console.log(answer);
     } else if (userNumber < rooms[room]) {
         answer = "Die Zahl ist kleiner als die Zufallszahl";
         console.log(answer);
