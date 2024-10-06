@@ -1,5 +1,4 @@
-# 1. Verwende das offizielle Node.js-Image als Basis
-FROM node:18
+FROM node:latest
 
 # 2. Setze das Arbeitsverzeichnis im Container
 WORKDIR /app
