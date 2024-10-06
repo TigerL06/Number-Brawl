@@ -12,8 +12,5 @@ RUN npm ci
 # 5. Kopiere den restlichen Anwendungs-Code aus dem Backend-Ordner
 COPY Backend/ .
 
-# 6. Exponiere den Port, auf dem der Server läuft (z.B. 6800)
-EXPOSE 3000
-
 # 7. Start-Befehl, um den Node.js-Server zu starten
 CMD ["npm", "run devStart"]
