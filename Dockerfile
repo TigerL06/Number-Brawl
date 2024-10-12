@@ -12,6 +12,8 @@ RUN npm ci
 # 5. Kopiere den restlichen Anwendungs-Code aus dem Backend-Ordner
 COPY Backend/ .
 
+ENV PORT 8080
+
 # 6. Exponiere den Port, auf dem der Server läuft (z.B. 6800)
 EXPOSE 8080
 
