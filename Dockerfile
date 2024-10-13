@@ -7,7 +7,7 @@ WORKDIR /app
 COPY Backend/package*.json ./
 
 # 4. Installiere die Abhängigkeiten
-RUN npm ci
+RUN npm install
 
 # 5. Kopiere den restlichen Anwendungs-Code aus dem Backend-Ordner
 COPY Backend/ .
@@ -18,4 +18,4 @@ ENV PORT 8080
 EXPOSE 8080
 
 # 7. Start-Befehl, um den Node.js-Server zu starten
-CMD ["npm", "run devStart"]
+CMD ["npm", "start"]
