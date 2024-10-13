@@ -168,6 +168,10 @@
 
         socket.on('win', (data) => {
             clearChat();
+            let name = data.winner;
+            let text = JSON.stringify(name);
+            let message = text + " hat gewonnen!";
+            alert(message );
             Win(data.winner); // Gewinnername anzeigen
         });
     </script>
